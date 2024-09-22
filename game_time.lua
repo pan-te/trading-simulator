@@ -1,0 +1,36 @@
+game_time = {}
+
+game_time.hours = 0
+game_time.minutes = 0
+game_time.seconds = 0
+
+game_time.convert_to_string = function(value)
+    local result = 0
+    if value < 10 then
+        result = "0" .. tostring(value)
+    else
+        result  = tostring(value)
+    end
+    return result
+end
+
+game_time.timeGet = function()
+    local time_ = {}
+    local seconds = game_time.convert_to_string(game_time.seconds)
+    local minutes = game_time.convert_to_string(game_time.minutes)
+    local hours = game_time.convert_to_string(game_time.hours)
+    time_ = hours .. ":" .. minutes .. ":" .. seconds
+    return time_
+end
+
+game_time.update = function()
+    game_time.seconds = game_time.seconds + 1
+    if game_time.seconds >= 60 then
+        game_time.seconds = 0
+        game_time.minutes = game_time.minutes + 1
+    end
+    if game_time.minutes >= 60 then
+        game_time.minutes = 0
+        game_time.hours = game_time.hours + 1
+    end
+end
