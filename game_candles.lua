@@ -9,13 +9,15 @@ game_candles.newCandle = function(market, start_index, end_index)
     for i=start_index,end_index do
         candle_values[i - start_index + 1] = market.values[i]
     end
-    candle.first = candle_values[1]
-    candle.last = candle_values[table.getn(candle_values)]
-    if candle.last == nil then candle.last = candle.first end
-    if candle.first == candle.last and candle.first ~= nil then candle.last = candle.first end
-    candle.max = math.max(unpack(candle_values))
-    candle.min = math.min(unpack(candle_values))
-    return candle
+    if table.getn(candle_values) > 2 then 
+        candle.first = candle_values[1]
+        candle.last = candle_values[table.getn(candle_values)]
+        if candle.last == nil then candle.last = candle.first end
+        if candle.first == candle.last and candle.first ~= nil then candle.last = candle.first end
+        candle.max = math.max(unpack(candle_values))
+        candle.min = math.min(unpack(candle_values))
+        return candle
+    end
 end
 
 game_candles.generateCandles = function(market)

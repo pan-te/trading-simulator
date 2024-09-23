@@ -20,7 +20,7 @@ game_chart.chartCreate = function()
         local scale = chart.background:getPixelHeight() / (market.max() - market.min())
         local candles = game_candles.generateCandles(market)
         for i=2,candles.num do
-            if candles.candle[i].last ~= nil then
+            if candles.candle[i] ~= nil then
                 local box = {i * 6 - 2, (candles.candle[i].last - market.min()) * scale,
                             4, (candles.candle[i].first - candles.candle[i].last) * scale}
                 local line = {i * 6, (candles.candle[i].max - market.min()) * scale,

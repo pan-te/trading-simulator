@@ -6,14 +6,14 @@ game_news.timer = 0
 
 game_news.rebound_impact = 0
 
-game_news.message = { "Barren Wuffet initiated a speculative attack on Zemendian currency!",
-                      "King of Zemendia was assassinated!",
-                      "President of USA decided to invade Zemendia!",
+game_news.message = { "Barren Wuffet initiated a speculative attack on Zemandian currency!",
+                      "King of Zemandia was assassinated!",
+                      "President of USA decided to invade Zemandia!",
                       "Lezenia's GDP grow was higher than expected.",
-                      "Zemendia's wheat production is 20% lower than last year.",
-                      "World Bank gave loans to Zemendia and Lezenia.",
+                      "Zemandia's wheat production is 20% lower than last year.",
+                      "World Bank gave loans to Zemandia and Lezenia.",
                       "Lezenia's tobacco production is 30% lower than expected.",
-                      "Zemendia's authority announced strict monetary policy.",
+                      "Zemandia's authority announced strict monetary policy.",
                       "China has territorial claims against Lezenia!",
                       "President of Lezenia has died in a plane crash!",
                       "Sergey Goross initiated a speculative attack on Lezenian currency!" }
