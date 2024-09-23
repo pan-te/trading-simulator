@@ -10,6 +10,35 @@ game_window.load = function()
     window.splash = love.graphics.newImage("texture/splash.png")
     window.scale_x = global_.width / global_.default_width
     window.scale_y = global_.height / global_.default_height
+    window.buttons = {}
+    
+    window.buttonAdd = function(task, texture_path, x0, y0)
+        local button = {}
+        button.image = love.graphics.newImage(texture_path)
+        button.x = x0 * window.scale_x
+        button.y = y0 * window.scale_y
+        button.w = button.image:getPixelWidth() * window.scale_x
+        button.h = button.image:getPixelHeight() * window.scale_y
+        button.task = task
+        window.buttons[table.getn(window.buttons) + 1] = button
+    end
+    
+    window.buttonsDraw = function()
+        for i=1,table.getn(window.buttons) do
+            love.graphics.draw(window.buttons[i].image, window.buttons[i].x, window.buttons[i].y, 0, window.scale_x, window.scale_y)
+        end
+    end
+    
+    window.buttonsCheck = function(x, y, arg1, arg2, arg3, arg4, arg5)
+        for i=1,table.getn(window.buttons) do
+            if x > window.buttons[i].x and x < window.buttons[i].x + window.buttons[i].w then
+                if y > window.buttons[i].y and y < window.buttons[i].y + window.buttons[i].h then
+                    window.buttons[i].task(i, arg2, arg3, arg4, arg5)
+                end
+            end
+        end
+    end
+	
 
     window.news_feed.update = function(news)
         if window.news_feed.news[1] == nil then window.news_feed.news[1] = news
@@ -62,6 +91,7 @@ game_window.load = function()
         window.askDraw(market)
         window.currentDraw(market)
         window.news_feed.draw(font)
+        window.buttonsDraw()
     end
 
     window.splashDraw = function()

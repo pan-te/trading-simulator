@@ -26,6 +26,8 @@ love.load = function()
     font_16 = love.graphics.newFont("font/unifont_sample.ttf", 16)
 --    font_10 = love.graphics.newFont("font/unifont_sample.ttf", 10)
     window = game_window.load()
+    window.buttonAdd(print, "texture/sell_button.png", 830, 200)
+    window.buttonAdd(print, "texture/buy_button.png", 930, 200)
     market = game_market.marketCreate(global_.market_start_value, 
                                       global_.market_start_variation,
                                       global_.market_start_trend,
@@ -74,4 +76,8 @@ love.keypressed = function(key, scancode, isrepeat)
     elseif key == "r" then
         love.load()
     end
+end
+
+love.mousepressed = function(x, y, button, istouch, presses)
+    window.buttonsCheck(x, y)
 end
