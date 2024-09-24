@@ -6,6 +6,8 @@ game_window.load = function()
     local window = {}
     window.news_feed = {}
     window.news_feed.news = {}
+    window.news_feed.delayed = {}
+    window.news_feed.timer = global_.news_update_time
     window.image = love.graphics.newImage("texture/game_window.png")
     window.splash = love.graphics.newImage("texture/splash.png")
     window.scale_x = global_.width / global_.default_width
@@ -38,6 +40,7 @@ game_window.load = function()
     end
     
     window.drawButtons = function()
+        love.graphics.setColor(255, 255, 255)
         for i=1,table.getn(window.buttons) do
             local image = {}
             if window.buttons[i].is_clicked then
@@ -68,15 +71,26 @@ game_window.load = function()
         if table.getn(window.news_feed.news) > 6 then table.remove(window.news_feed.news, 1) end
     end
 
+    window.news_feed.updateDelayed = function()
+        if window.news_feed.timer < 0 and table.getn(window.news_feed.news) > 0 then
+            for i=1,table.getn(window.news_feed.news) do
+                window.news_feed.delayed[i] = window.news_feed.news[i]
+            end
+            window.news_feed.timer = global_.news_update_time
+        end
+        window.news_feed.timer = window.news_feed.timer - 1
+    end
+
+
     window.news_feed.draw = function(font)
         love.graphics.setColor(192, 192, 192)
         love.graphics.setFont(font)
-        if window.news_feed.news[1] ~= nil then
-            for i=1,table.getn(window.news_feed.news) do
-                local news = window.news_feed.news[i]
+        if window.news_feed.delayed[1] ~= nil then
+            for i=1,table.getn(window.news_feed.delayed) do
+                local news = window.news_feed.delayed[i]
                 love.graphics.print(news,
                                     20 * window.scale_x,
-                                    (630 + 16 * (table.getn(window.news_feed.news) + 1 - i)) * window.scale_y,
+                                    (630 + 16 * (table.getn(window.news_feed.delayed) + 1 - i)) * window.scale_y,
                                     0,
                                     window.scale_x,
                                     window.scale_y)
@@ -112,6 +126,53 @@ game_window.load = function()
         0,
         window.scale_x * 1.5,
         window.scale_y * 2)
+        if wallet.getTransactionStatus()[1] then
+            local difference = wallet.getTransactionValue() - wallet.getTransactionStartValue()
+            local percent = difference / wallet.getTransactionStartValue() * 100
+            if difference <= 0 then
+                love.graphics.setColor(255, 0, 0)
+            else
+                love.graphics.setColor(0, 255, 0)
+            end
+            love.graphics.print({string.format("%.2f USD, %.2f", difference, percent), "%"},
+            window.scale_x * 830,
+            window.scale_y * 320,
+            0,
+            window.scale_x * 1,
+            window.scale_y * 1)
+        end
+    end
+
+    window.drawTransactionValue = function(font, wallet)
+        if not wallet.getTransactionStatus()[1] then
+            love.graphics.setColor(255, 255, 255)
+        else
+            love.graphics.setColor(0, 0, 255)
+        end
+        love.graphics.setFont(font)
+        love.graphics.print("Transaction value",
+                            window.scale_x * 850,
+                            window.scale_y * 380,
+                            0,
+                            window.scale_x * 1,
+                            window.scale_y * 1)
+        love.graphics.print(string.format("%.0f", wallet.getTransactionValue()),
+                            window.scale_x * 880,
+                            window.scale_y * 400,
+                            0,
+                            window.scale_x * 1.5,
+                            window.scale_y * 1.5)
+        love.graphics.setColor(255, 255, 255)
+    end
+
+    window.drawGameVersion = function(font)
+        love.graphics.setFont(font)
+        love.graphics.print({"Version: ", global_.game_version},
+                            (global_.width - 200),
+                            (global_.height - 16),
+                            0,
+                            window.scale_x,
+                            window.scale_y)
     end
     
     window.draw = function(font, time, market, wallet)
@@ -123,6 +184,8 @@ game_window.load = function()
         window.drawBid(market)
         window.news_feed.draw(font)
         window.drawAccountValue(wallet)
+        window.drawTransactionValue(font, wallet)
+        window.drawGameVersion(font)
         window.drawButtons()
     end
 

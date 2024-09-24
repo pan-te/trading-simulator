@@ -2,6 +2,7 @@ require "math"
 
 global_ = {}
 
+global_.game_version = "0.8"
 --scalling
 global_.width = 1180
 global_.height = 600
@@ -24,13 +25,14 @@ global_.market_value_to_variation = global_.market_start_value / global_.market_
 global_.market_start_trend = 0
 global_.market_max_size = global_.interval * global_.candle_num
 global_.market_sample_interval = math.floor(global_.interval / global_.time_scale)
-global_.bid_to_ask = 1 + global_.market_start_variation / 3
+global_.bid_to_ask = 1 + global_.market_start_variation / 4
 
 --news related variables
-global_.market_intensity = 3000 --impacts frequency of news. higher means intensity is lower
+global_.market_intensity = 5000 --impacts frequency of news. higher means intensity is lower
 global_.market_min_event_time = 60
 global_.market_max_event_time = 10 * 60
 global_.rebound = 0.05 -- should be lower than 1
+global_.news_update_time = 120
 
 --start money
 global_.start_money = 10000

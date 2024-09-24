@@ -1,3 +1,4 @@
+require "math"
 game_money = {}
 
 game_money.createWallet = function(cash, market, leverage)
@@ -43,6 +44,14 @@ game_money.createWallet = function(cash, market, leverage)
         end
     end
 
+    wallet.getTransactionStatus = function()
+        return {wallet.intrade, wallet.buy}
+    end
+
+    wallet.getTransactionStartValue = function()
+        return wallet.transaction_start_value
+    end
+
     wallet.transactionInit = function(buy)
         wallet.transaction_start_value = wallet.transaction_value
         if not buy then
@@ -63,8 +72,6 @@ game_money.createWallet = function(cash, market, leverage)
             wallet.ammount = wallet.ammount + wallet.transaction_value
         end
         wallet.update()
-        print("Sold for " .. tostring(wallet.transaction_value) .. " at " .. tostring(wallet.transaction_start_price))
-        print("Current account value is " .. tostring(wallet.ammount))
     end
 
     wallet.buy = function()
@@ -76,19 +83,19 @@ game_money.createWallet = function(cash, market, leverage)
             wallet.ammount = wallet.ammount + wallet.transaction_value
         end
         wallet.update()
-        print("Bought for " .. tostring(wallet.transaction_value) .. " at " .. tostring(wallet.transaction_start_price))
-        print("Current account value is " .. tostring(wallet.ammount))
     end
 
-    wallet.incTransactionValue = function(value)
+    wallet.incTransactionValue = function()
         if not wallet.intrade then
+            local value = math.floor(wallet.ammount / 100)
             wallet.transaction_value = wallet.transaction_value + value
             if wallet.transaction_value > wallet.ammount then wallet.transaction_value = wallet.ammount end
         end
     end
 
-    wallet.decTransactionValue = function(value)
+    wallet.decTransactionValue = function()
         if not wallet.intrade then
+            local value = math.floor(wallet.ammount / 100)
             wallet.transaction_value = wallet.transaction_value - value
             if wallet.transaction_value < 0 then wallet.transaction_value = 0 end
         end

@@ -4,7 +4,7 @@ game_time.hours = 0
 game_time.minutes = 0
 game_time.seconds = 0
 
-game_time.convert_to_string = function(value)
+game_time.convertToString = function(value)
     local result = 0
     if value < 10 then
         result = "0" .. tostring(value)
@@ -14,11 +14,11 @@ game_time.convert_to_string = function(value)
     return result
 end
 
-game_time.timeGet = function()
+game_time.getTime = function()
     local time_ = {}
-    local seconds = game_time.convert_to_string(game_time.seconds)
-    local minutes = game_time.convert_to_string(game_time.minutes)
-    local hours = game_time.convert_to_string(game_time.hours)
+    local seconds = game_time.convertToString(game_time.seconds)
+    local minutes = game_time.convertToString(game_time.minutes)
+    local hours = game_time.convertToString(game_time.hours)
     time_ = hours .. ":" .. minutes .. ":" .. seconds
     return time_
 end

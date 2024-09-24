@@ -11,7 +11,9 @@ game_news.message = { "Barren Wuffet initiated a speculative attack on Zemandian
                       "President of USA decided to invade Zemandia!",
                       "Lezenia's GDP grow was higher than expected.",
                       "Zemandia's wheat production is 20% lower than last year.",
+                      "World Bank gave loan to Lezenia.",
                       "World Bank gave loans to Zemandia and Lezenia.",
+                      "World Bank gave loan to Zemandia.",
                       "Lezenia's tobacco production is 30% lower than expected.",
                       "Zemandia's authority announced strict monetary policy.",
                       "China has territorial claims against Lezenia!",
@@ -20,10 +22,10 @@ game_news.message = { "Barren Wuffet initiated a speculative attack on Zemandian
 
 game_news.message_shift = math.floor(table.getn(game_news.message) / 2) + 1
 
-game_news.trend_multiplier = global_.market_start_variation / (game_news.message_shift - 1) / math.random(1,3)
+game_news.trend_multiplier = -global_.market_start_variation / (game_news.message_shift - 1) / math.random(1,3)
 
 game_news.rerandomize = function()
-    game_news.trend_multiplier = global_.market_start_variation / (game_news.message_shift - 1) / math.random(1,3)
+    game_news.trend_multiplier = -global_.market_start_variation / (game_news.message_shift - 1) / math.random(1,3)
 end
 
 game_news.newsHandling = function(market, dt, time)
