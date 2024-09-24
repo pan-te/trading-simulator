@@ -1,0 +1,1 @@
+7z a ../trader.love font texture/*.png *.lua LICENSE

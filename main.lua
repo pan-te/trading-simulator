@@ -80,7 +80,7 @@ love.keypressed = function(key, scancode, isrepeat)
             inmenu = false
         end
     elseif ingame then
-        if key == "escape" then
+        if key == "q" then
             ingame = false
             summary = game_summary.generate(wallet)
         end
