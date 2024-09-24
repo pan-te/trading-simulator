@@ -11,7 +11,7 @@ global_.scale_x = global_.width / global_.default_width
 global_.scale_y = global_.height / global_.default_height
 
 --game speed
-global_.time_scale = 1 / 12 -- higher means slower
+global_.time_scale = 1/12 -- higher means slower
 
 --candle variables
 global_.interval = 60 -- samples inside one candle
@@ -24,10 +24,14 @@ global_.market_value_to_variation = global_.market_start_value / global_.market_
 global_.market_start_trend = 0
 global_.market_max_size = global_.interval * global_.candle_num
 global_.market_sample_interval = math.floor(global_.interval / global_.time_scale)
-global_.bid_to_ask = 1 + global_.market_start_variation / 10
+global_.bid_to_ask = 1 + global_.market_start_variation / 3
 
 --news related variables
 global_.market_intensity = 3000 --impacts frequency of news. higher means intensity is lower
 global_.market_min_event_time = 60
 global_.market_max_event_time = 10 * 60
 global_.rebound = 0.05 -- should be lower than 1
+
+--start money
+global_.start_money = 10000
+global_.leverage = 50

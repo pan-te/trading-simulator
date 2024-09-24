@@ -5,7 +5,7 @@ game_market = {}
 
 game_market.max_size = global_.market_max_size
 
-game_market.marketCreate = function(start_value, maxdy, trend, time)
+game_market.createMarket = function(start_value, maxdy, trend, time)
     local market = {}
     market.values = {} 
     market.values[1] = start_value
@@ -22,31 +22,31 @@ game_market.marketCreate = function(start_value, maxdy, trend, time)
         end
     end
 
-    market.max = function()
+    market.getMax = function()
         return math.max(unpack(market.values))
     end
 
-    market.min = function()
+    market.getMin = function()
         return math.min(unpack(market.values))
     end
 
-    market.current = function()
+    market.getBid = function()
         return market.values[table.getn(market.values)]
     end
 
-    market.ask = function()
-        return market.current() * global_.bid_to_ask
+    market.getAsk = function()
+        return market.getBid() * global_.bid_to_ask
     end
 
-    market.length = function()
+    market.getLength = function()
         return table.getn(market.values)
     end
 
-    market.trendChange = function(value)
+    market.changeTrend = function(value)
         market.trend = value
     end
 
-    market.trendGet = function()
+    market.getTrend = function()
         return market.trend
     end
 

@@ -29,16 +29,16 @@ end
 game_news.newsHandling = function(market, dt, time)
     local news = ""
     if game_news.timer <= 0 then
-        market.trendChange(game_news.rebound_impact)
+        market.changeTrend(game_news.rebound_impact)
         local news_chance = math.random(1, global_.market_intensity)
         local news_impact = math.random(-game_news.message_shift + 1, game_news.message_shift - 1)
         if news_chance > global_.market_intensity - 1 then
             if news_impact ~= 0 then
-                market.trendChange(game_news.trend_multiplier * news_impact)
+                market.changeTrend(-game_news.trend_multiplier * news_impact)
             end
             game_news.timer = math.random(global_.market_min_event_time, global_.market_max_event_time)
             news = time .. " " .. game_news.message[news_impact + game_news.message_shift]
-            game_news.rebound_impact = - market.trendGet() * math.random(0, global_.rebound * 100) / 100
+            game_news.rebound_impact = - market.getTrend() * math.random(0, global_.rebound * 100) / 100
         end
         game_news.rerandomize()
     end

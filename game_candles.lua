@@ -23,11 +23,11 @@ end
 game_candles.generateCandles = function(market)
     local candles_set = {}
     candles_set.candle = {}
-    if market.length() > 0 then
-        candles_set.num = math.floor(market.length() / global_.interval) + 1
+    if market.getLength() > 0 then
+        candles_set.num = math.floor(market.getLength() / global_.interval) + 1
         for i=1,candles_set.num do
-            if i * global_.interval > market.length() then
-                candles_set.candle[i] = game_candles.newCandle(market, (i - 1) * global_.interval + 1, market.length())
+            if i * global_.interval > market.getLength() then
+                candles_set.candle[i] = game_candles.newCandle(market, (i - 1) * global_.interval + 1, market.getLength())
             else
                 candles_set.candle[i] = game_candles.newCandle(market, (i - 1) * global_.interval + 1, i * global_.interval)
             end
