@@ -6,6 +6,7 @@ require "game_news"
 require "game_time"
 require "game_summary"
 require "game_money"
+require "game_recorder"
 require "math"
 
 summary = {}
@@ -20,8 +21,10 @@ love.load = function()
     game_time.hours = 0
     game_time.minutes = 0
     game_time.seconds = 0
+    game_time.absolute = 0
     love.window.setTitle("pan-te's trading simulator")
     font_16 = love.graphics.newFont("font/unifont_sample.ttf", 16)
+    recorder = game_recorder.createRecorder()
     window = game_window.load()
     market = game_market.createMarket(global_.market_start_value,
                                       global_.market_start_variation,
@@ -47,6 +50,7 @@ love.update = function(dt)
             end
             market.update()
             wallet.update()
+            recorder.update({market.getBid(), wallet.getAccountValue()})
             local event = game_news.newsHandling(market, dt, game_time.getTime())
             if string.len(event) > 2 then window.news_feed.update(event) end
             window.news_feed.updateDelayed()
@@ -64,7 +68,10 @@ love.draw = function()
     if not inmenu then
         window.draw(font_16, game_time.getTime(), market, wallet)
         chart.draw(market, font_16)
-        if not ingame then summary.draw(font_16) end
+        if not ingame then
+            summary.draw(font_16)
+            recorder.draw(font_16)
+        end
     else
         window.drawSplash()
     end

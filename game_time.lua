@@ -3,6 +3,7 @@ game_time = {}
 game_time.hours = 0
 game_time.minutes = 0
 game_time.seconds = 0
+game_time.absolute = 0
 
 game_time.convertToString = function(value)
     local result = 0
@@ -23,7 +24,12 @@ game_time.getTime = function()
     return time_
 end
 
+game_time.getAbsoluteTime = function()
+    return game_time.absolute
+end
+
 game_time.update = function()
+    game_time.absolute = game_time.absolute + 1
     game_time.seconds = game_time.seconds + 1
     if game_time.seconds >= 60 then
         game_time.seconds = 0

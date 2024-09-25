@@ -37,7 +37,7 @@ game_window.load = function()
     end
     
     window.drawButtons = function()
-        love.graphics.setColor(255, 255, 255)
+        love.graphics.setColor(1, 1, 1)
         for i=1,table.getn(window.buttons) do
             local image = {}
             if window.buttons[i].is_clicked then
@@ -83,7 +83,7 @@ game_window.load = function()
 
 
     window.news_feed.draw = function(font)
-        love.graphics.setColor(192, 192, 192)
+        love.graphics.setColor(0.8, 0.8, 0.8)
         love.graphics.setFont(font)
         if window.news_feed.delayed[1] ~= nil then
             for i=1,table.getn(window.news_feed.delayed) do
@@ -99,7 +99,7 @@ game_window.load = function()
     end
 
     window.drawBid = function(market)
-        love.graphics.setColor(255, 0, 0)
+        love.graphics.setColor(1, 0, 0)
         love.graphics.print({"BID\n", string.format("%.4f", market.getBid())},
                             830,
                             150,
@@ -109,7 +109,7 @@ game_window.load = function()
     end
 
     window.drawAsk = function(market)
-        love.graphics.setColor(0, 255, 0)
+        love.graphics.setColor(0, 1, 0)
         love.graphics.print({"ASK\n", string.format("%.4f", market.getAsk())},
                             930,
                             150,
@@ -119,7 +119,7 @@ game_window.load = function()
     end
 
     window.drawAccountValue = function(wallet)
-        love.graphics.setColor(255, 255, 128)
+        love.graphics.setColor(1, 1, 0.5)
         love.graphics.print({"Account Value\n", string.format("%.2f USD", wallet.getAccountValue())},
         830,
         250,
@@ -129,10 +129,13 @@ game_window.load = function()
         if wallet.getTransactionStatus()[1] then
             local difference = wallet.getTransactionValue() - wallet.getTransactionStartValue()
             local percent = difference / wallet.getTransactionStartValue() * 100
+            if wallet.getTransactionStartValue() <= 0 then
+                percent = 0
+            end
             if difference <= 0 then
-                love.graphics.setColor(255, 0, 0)
+                love.graphics.setColor(1, 0, 0)
             else
-                love.graphics.setColor(0, 255, 0)
+                love.graphics.setColor(0, 1, 0)
             end
             love.graphics.print({string.format("%.2f USD, %.2f", difference, percent), "%"},
             830,
@@ -145,9 +148,9 @@ game_window.load = function()
 
     window.drawTransactionValue = function(font, wallet)
         if not wallet.getTransactionStatus()[1] then
-            love.graphics.setColor(255, 255, 255)
+            love.graphics.setColor(1, 1, 1)
         else
-            love.graphics.setColor(0, 0, 255)
+            love.graphics.setColor(0, 0, 1)
         end
         love.graphics.setFont(font)
         love.graphics.print("Transaction value",
@@ -162,7 +165,7 @@ game_window.load = function()
                             0,
                             1.5,
                             1.5)
-        love.graphics.setColor(255, 255, 255)
+        love.graphics.setColor(1, 1, 1)
     end
 
     window.drawGameVersion = function(font)
@@ -178,7 +181,7 @@ game_window.load = function()
     window.draw = function(font, time, market, wallet)
         local canvas = love.graphics.newCanvas(global_.default_width, global_.default_height)
         love.graphics.setCanvas(canvas)
-        love.graphics.setColor(255, 255, 255)
+        love.graphics.setColor(1, 1, 1)
         love.graphics.draw(window.image, 0, 0, 0, 1, 1)
         love.graphics.setFont(font)
         love.graphics.print(time, 850, 120, 0, 2, 2)
@@ -191,6 +194,7 @@ game_window.load = function()
         window.drawButtons()
         love.graphics.setCanvas()
         local w, h = love.graphics.getDimensions()
+        love.graphics.setColor(1, 1, 1)
         love.graphics.draw(canvas,
                             0,
                             0,
@@ -203,7 +207,7 @@ game_window.load = function()
         local w, h = love.graphics.getDimensions()
         local canvas = love.graphics.newCanvas(global_.default_width, global_.default_height)
         love.graphics.setCanvas(canvas)
-        love.graphics.setColor(255, 255, 255)
+        love.graphics.setColor(1, 1, 1)
         love.graphics.draw(window.splash, 0, 0, 0, 1, 1)
         love.graphics.setCanvas()
         love.graphics.draw(canvas,

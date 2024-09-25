@@ -2,7 +2,7 @@ require "math"
 
 global_ = {}
 
-global_.game_version = "0.8a"
+global_.game_version = "0.9a"
 --scalling
 global_.default_width = 1024
 global_.default_height = 768
@@ -33,3 +33,6 @@ global_.news_update_time = 120
 --start money
 global_.start_money = 10000
 global_.leverage = 50
+
+--game recorder
+global_.game_recorder_update_interval = 60

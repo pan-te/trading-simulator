@@ -24,7 +24,10 @@ game_money.createWallet = function(cash, market, leverage)
     wallet.update = function()
         if wallet.intrade then
             wallet.transaction_value = wallet.transaction_start_value * wallet.transactionMultiplier(wallet.buy)
-        elseif wallet.transaction_value > wallet.ammount then wallet.transaction_value = wallet.ammount
+        elseif wallet.transaction_value > wallet.ammount then
+            wallet.transaction_value = wallet.ammount
+        elseif wallet.transaction_value < 0 then
+            wallet.transaction_value = 0
         end
     end
 

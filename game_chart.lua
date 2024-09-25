@@ -26,9 +26,9 @@ game_chart.createChart = function()
                 local line = {i * 6, (candles.candle[i].max - market.getMin()) * scale,
                             i * 6, (candles.candle[i].min - market.getMin()) * scale}
                 if candles.candle[i].last > candles.candle[i].first then
-                    love.graphics.setColor(0, 255, 0)
+                    love.graphics.setColor(0, 1, 0)
                 else
-                    love.graphics.setColor(255, 0, 0)
+                    love.graphics.setColor(1, 0, 0)
                 end
                 love.graphics.line(line[1], line[2], line[3], line[4])
                 love.graphics.rectangle("fill", box[1], box[2], box[3], box[4])
@@ -38,7 +38,7 @@ game_chart.createChart = function()
     end
 
     chart.drawCurrentValue = function(market, font)
-        love.graphics.setColor(128, 0, 0)
+        love.graphics.setColor(1, 0, 0)
         local current_value = (market.getBid() - market.getMin()) * chart.background:getPixelHeight() / (market.getMax() - market.getMin())
         love.graphics.line(0, current_value, chart.background:getPixelWidth() - 80, current_value)
         love.graphics.setFont(font)
@@ -47,7 +47,7 @@ game_chart.createChart = function()
 
     chart.drawAskValue = function(market, font)
         if market.getAsk() < market.getMax() then
-            love.graphics.setColor(0, 128, 0)
+            love.graphics.setColor(0, 1, 0)
             local current_value = (market.getAsk() - market.getMin()) * chart.background:getPixelHeight() / (market.getMax() - market.getMin())
             love.graphics.line(0, current_value, chart.background:getPixelWidth() - 80, current_value)
             love.graphics.setFont(font)
@@ -56,7 +56,7 @@ game_chart.createChart = function()
     end
     
     chart.drawTopValue = function(market, font)
-        love.graphics.setColor(160, 160, 160)
+        love.graphics.setColor(0.7, 0.7, 0.7)
         local current_value = (market.getMax() - market.getMin()) * chart.background:getPixelHeight() / (market.getMax() - market.getMin())
         love.graphics.line(0, current_value, chart.background:getPixelWidth() - 80, current_value)
         love.graphics.setFont(font)
@@ -64,7 +64,7 @@ game_chart.createChart = function()
     end
 
     chart.drawBottomValue = function(market, font)
-        love.graphics.setColor(160, 160, 160)
+        love.graphics.setColor(0.7, 0.7, 0.7)
         local current_value = 0
         love.graphics.line(0, current_value, chart.background:getPixelWidth() - 80, current_value)
         love.graphics.setFont(font)
@@ -72,14 +72,15 @@ game_chart.createChart = function()
     end
 
     chart.draw = function(market, font)
-        love.graphics.applyTransform(chart.transform)
-        love.graphics.setColor(255, 255, 255)
+        love.graphics.replaceTransform(chart.transform)
+        love.graphics.setColor(1, 1, 1)
         love.graphics.draw(chart.background,  0, 0, 0)
         chart.drawCandles(market)
         chart.drawCurrentValue(market, font)
         chart.drawAskValue(market, font)
         chart.drawTopValue(market, font)
         chart.drawBottomValue(market, font)
+        love.graphics.replaceTransform(love.math.newTransform())
     end
     
     return chart
