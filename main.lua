@@ -9,14 +9,11 @@ require "game_money"
 require "math"
 
 summary = {}
---timer = 0
---inmenu = true
---ingame = false
---game_time.hours = 7
---game_time.minutes = 59
 
 love.load = function()
     math.randomseed(os.time(os.date("!*t")))
+    local desktop_w, desktop_h = love.window.getDesktopDimensions()
+    love.window.setMode(math.floor(desktop_w * 0.75), math.floor(desktop_h * 0.75))
     timer = 0
     inmenu = true
     ingame = false

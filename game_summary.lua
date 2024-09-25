@@ -11,7 +11,7 @@ game_summary.generate = function(wallet)
     elseif wallet.getAccountValue() > 1.5 * global_.start_money then
         summary.message = "Well done! It was a good day."
     elseif wallet.getAccountValue() > global_.start_money then
-        summary.message = "Not bad. You ended this session with profit."
+        summary.message = "Not bad. You ended this\n session with profit."
     elseif wallet.getAccountValue() > global_.start_money * 0.75 then
         summary.message = "It wasn't your best session.\n Maybe next time."
     elseif wallet.getAccountValue() > global_.start_money / 3 then
@@ -27,23 +27,26 @@ end
     
     summary.draw = function(font)
         local transform = love.math.newTransform()
+        local width, height = love.graphics.getDimensions()
         love.graphics.replaceTransform(transform)
         love.graphics.applyTransform(transform)
         love.graphics.setColor(0, 0, 0, 0.5)
-        love.graphics.rectangle("fill", 0, 0, global_.width, global_.height)
+        love.graphics.rectangle("fill", 0, 0, width, height)
         love.graphics.setColor(1, 1, 1)
-        love.graphics.rectangle("fill", global_.width / 4, global_.height / 4,
-                                        global_.width / 2, global_.height / 2)
+        love.graphics.rectangle("fill", width / 4, height / 4,
+                                        width / 2, height / 2)
         love.graphics.setFont(font)
         love.graphics.setColor(0, 0, 0)
         love.graphics.print("THIS TRADING SESSION IS OVER.",
-                            global_.width / 3.3, global_.height / 4,
+                            width / 3.3, height / 4,
                             0,
-                            1.8 * global_.scale_x, 2 * global_.scale_y)
+                            1.8 * width / global_.default_width,
+                            2 * height / global_.default_height)
         love.graphics.print(summary.message,
-                            global_.width / 3, global_.height / 3,
+                            width / 3, height / 3,
                             0,
-                            1.5 * global_.scale_x, 1.5 * global_.scale_y)                 
+                            1.5 * width / global_.default_width,
+                            1.5 * height / global_.default_height)                 
     end
     return summary
 end

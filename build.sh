@@ -1,1 +1,2 @@
-7z a ../trader.love font texture/*.png *.lua LICENSE
+rm ../trader.love
+zip -9 -r ../trader.love font texture/*.png *.lua LICENSE

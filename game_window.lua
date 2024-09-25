@@ -10,8 +10,6 @@ game_window.load = function()
     window.news_feed.timer = global_.news_update_time
     window.image = love.graphics.newImage("texture/game_window.png")
     window.splash = love.graphics.newImage("texture/splash.png")
-    window.scale_x = global_.width / global_.default_width
-    window.scale_y = global_.height / global_.default_height
     window.buttons = {}
     
     window.addButton = function(task, texture_path, x0, y0)
@@ -19,10 +17,9 @@ game_window.load = function()
         button.name = texture_path
         button.image = love.graphics.newImage("texture/" .. texture_path .. ".png")
         button.image_clicked = love.graphics.newImage("texture/" .. texture_path .. "_clicked.png")
-        button.x = x0 * window.scale_x
-        button.y = y0 * window.scale_y
-        button.w = button.image:getPixelWidth() * window.scale_x
-        button.h = button.image:getPixelHeight() * window.scale_y
+        button.x = x0
+        button.y = y0
+        button.w, button.h = button.image:getDimensions()
         button.task = task
         button.is_clicked = false
 
@@ -48,11 +45,14 @@ game_window.load = function()
             else
                 image = window.buttons[i].image
             end
-            love.graphics.draw(image, window.buttons[i].x, window.buttons[i].y, 0, window.scale_x, window.scale_y)
+            love.graphics.draw(image, window.buttons[i].x, window.buttons[i].y, 0, 1, 1)
         end
     end
     
-    window.checkButtons = function(x, y, arg1, arg2, arg3, arg4, arg5)
+    window.checkButtons = function(x0, y0, arg1, arg2, arg3, arg4, arg5)
+        local w, h = love.graphics.getDimensions()
+        local x = x0 / w * global_.default_width
+        local y = y0 / h * global_.default_height
         for i=1,table.getn(window.buttons) do
             if x > window.buttons[i].x and x < window.buttons[i].x + window.buttons[i].w then
                 if y > window.buttons[i].y and y < window.buttons[i].y + window.buttons[i].h and window.buttons[i].is_clicked == false then
@@ -89,11 +89,11 @@ game_window.load = function()
             for i=1,table.getn(window.news_feed.delayed) do
                 local news = window.news_feed.delayed[i]
                 love.graphics.print(news,
-                                    20 * window.scale_x,
-                                    (630 + 16 * (table.getn(window.news_feed.delayed) + 1 - i)) * window.scale_y,
+                                    20,
+                                    (630 + 16 * (table.getn(window.news_feed.delayed) + 1 - i)),
                                     0,
-                                    window.scale_x,
-                                    window.scale_y)
+                                    1,
+                                    1)
             end
         end
     end
@@ -101,31 +101,31 @@ game_window.load = function()
     window.drawBid = function(market)
         love.graphics.setColor(255, 0, 0)
         love.graphics.print({"BID\n", string.format("%.4f", market.getBid())},
-                            window.scale_x * 830,
-                            window.scale_y * 150,
+                            830,
+                            150,
                             0,
-                            window.scale_x * 1.2,
-                            window.scale_y * 1.2)
+                            1.2,
+                            1.2)
     end
 
     window.drawAsk = function(market)
         love.graphics.setColor(0, 255, 0)
         love.graphics.print({"ASK\n", string.format("%.4f", market.getAsk())},
-                            window.scale_x * 930,
-                            window.scale_y * 150,
+                            930,
+                            150,
                             0,
-                            window.scale_x * 1.2,
-                            window.scale_y * 1.2)
+                            1.2,
+                            1.2)
     end
 
     window.drawAccountValue = function(wallet)
         love.graphics.setColor(255, 255, 128)
         love.graphics.print({"Account Value\n", string.format("%.2f USD", wallet.getAccountValue())},
-        window.scale_x * 830,
-        window.scale_y * 250,
+        830,
+        250,
         0,
-        window.scale_x * 1.5,
-        window.scale_y * 2)
+        1.5,
+        2)
         if wallet.getTransactionStatus()[1] then
             local difference = wallet.getTransactionValue() - wallet.getTransactionStartValue()
             local percent = difference / wallet.getTransactionStartValue() * 100
@@ -135,11 +135,11 @@ game_window.load = function()
                 love.graphics.setColor(0, 255, 0)
             end
             love.graphics.print({string.format("%.2f USD, %.2f", difference, percent), "%"},
-            window.scale_x * 830,
-            window.scale_y * 320,
+            830,
+            320,
             0,
-            window.scale_x * 1,
-            window.scale_y * 1)
+            1,
+            1)
         end
     end
 
@@ -151,35 +151,37 @@ game_window.load = function()
         end
         love.graphics.setFont(font)
         love.graphics.print("Transaction value",
-                            window.scale_x * 850,
-                            window.scale_y * 380,
+                            850,
+                            380,
                             0,
-                            window.scale_x * 1,
-                            window.scale_y * 1)
+                            1,
+                            1)
         love.graphics.print(string.format("%.0f", wallet.getTransactionValue()),
-                            window.scale_x * 880,
-                            window.scale_y * 400,
+                            880,
+                            400,
                             0,
-                            window.scale_x * 1.5,
-                            window.scale_y * 1.5)
+                            1.5,
+                            1.5)
         love.graphics.setColor(255, 255, 255)
     end
 
     window.drawGameVersion = function(font)
         love.graphics.setFont(font)
         love.graphics.print({"Version: ", global_.game_version},
-                            (global_.width - 200),
-                            (global_.height - 16),
+                            (global_.default_width - 200),
+                            (global_.default_height - 16),
                             0,
-                            window.scale_x,
-                            window.scale_y)
+                            1,
+                            1)
     end
     
     window.draw = function(font, time, market, wallet)
+        local canvas = love.graphics.newCanvas(global_.default_width, global_.default_height)
+        love.graphics.setCanvas(canvas)
         love.graphics.setColor(255, 255, 255)
-        love.graphics.draw(window.image, 0, 0, 0, window.scale_x, window.scale_y)
+        love.graphics.draw(window.image, 0, 0, 0, 1, 1)
         love.graphics.setFont(font)
-        love.graphics.print(time, window.scale_x * 850, window.scale_y * 120, 0, window.scale_x * 2, window.scale_y * 2)
+        love.graphics.print(time, 850, 120, 0, 2, 2)
         window.drawAsk(market)
         window.drawBid(market)
         window.news_feed.draw(font)
@@ -187,11 +189,29 @@ game_window.load = function()
         window.drawTransactionValue(font, wallet)
         window.drawGameVersion(font)
         window.drawButtons()
+        love.graphics.setCanvas()
+        local w, h = love.graphics.getDimensions()
+        love.graphics.draw(canvas,
+                            0,
+                            0,
+                            0,
+                            w / global_.default_width,
+                            h / global_.default_height)
     end
 
     window.drawSplash = function()
+        local w, h = love.graphics.getDimensions()
+        local canvas = love.graphics.newCanvas(global_.default_width, global_.default_height)
+        love.graphics.setCanvas(canvas)
         love.graphics.setColor(255, 255, 255)
-        love.graphics.draw(window.splash, 0, 0, 0, window.scale_x, window.scale_y)
+        love.graphics.draw(window.splash, 0, 0, 0, 1, 1)
+        love.graphics.setCanvas()
+        love.graphics.draw(canvas,
+                            0,
+                            0,
+                            0,
+                            w / global_.default_width,
+                            h / global_.default_height)
     end
 
     return window

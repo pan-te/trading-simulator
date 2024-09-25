@@ -2,14 +2,10 @@ require "math"
 
 global_ = {}
 
-global_.game_version = "0.8"
+global_.game_version = "0.8a"
 --scalling
-global_.width = 1180
-global_.height = 600
 global_.default_width = 1024
 global_.default_height = 768
-global_.scale_x = global_.width / global_.default_width
-global_.scale_y = global_.height / global_.default_height
 
 --game speed
 global_.time_scale = 1/12 -- higher means slower
